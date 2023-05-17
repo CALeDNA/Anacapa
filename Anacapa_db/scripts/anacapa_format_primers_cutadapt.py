@@ -6,29 +6,20 @@
 # python <path to script> <adapter_type> <input forward primer file> <input reverse primer file> <out put file path>
 
 import sys
-F_infile = open(sys.argv[2], "r") #fasta of forward primers
-R_infile = open(sys.argv[3], "r") #fasta of reverse primers
+F_infile = open(sys.argv[1], "r") #fasta of forward primers
+R_infile = open(sys.argv[2], "r") #fasta of reverse primers
 
-out_path = sys.argv[4] +'/'
+out_path = sys.argv[3] +'/'
 prim_adapt = out_path
 prim = out_path
 
-adapt = sys.argv[1]
 next = "nextera"
 true = "truseq"
-neb = "NEBnext"
 
-if adapt == next:
-   adapter_Frc='ACACCTGTCTCTTATACACATCTGACGCTGCCGACGA'
-   adapter_Rrc='CTGTCTCTTATACACATCTCCGAGCCCACGAGA'
-elif adapt == true:
-   adapter_Frc='AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'
-   adapter_Rrc='AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
-elif adapt == neb:
-    adapter_Frc='GATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
-    adapter_Rrc='GATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
-else:
-   print "\n warning \n not nextera or truseq add adater to anacapa_format_primers_cutadapt.py"
+adapter_Frc_nextera='ACACCTGTCTCTTATACACATCTGACGCTGCCGACGA'
+adapter_Rrc_nextera='CTGTCTCTTATACACATCTCCGAGCCCACGAGA'
+adapter_Frc_truseq='AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'
+adapter_Rrc_truseq='AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
 
 
 nuc_dict = {'A':'T','T':'A','U':'A','G':'C','C':'G','Y':'R','R':'Y','S':'S','W':'W','K':'M','M':'K','B':'V','D':'H','H':'D','V':'B','N':'N','I':'I','a':'T','t':'A','u':'A','g':'C','c':'G','y':'R','r':'Y','s':'S','w':'W','k':'M','m':'K','b':'V','d':'H','h':'D','v':'B','n':'N'}
@@ -50,41 +41,56 @@ header = ''
 seq = ''
 for line in F_infile:
     if line[0] == ">":
-    	header = line.strip()
+        header = line.strip()
         outfile.write(header + "\n")
     else:
-    	seq = line.strip()
-    	outfile.write("^" + seq + "\n")
+        seq = line.strip()
+        outfile.write("^" + seq + "\n")
 outfile.close()
 F_infile.close()
 
 ### make reverse complement primers with seq$ -> a
-F_infile = open(sys.argv[2], "r")
+F_infile = open(sys.argv[1], "r")
 outfile = open(prim + "A_forward_rc_primers.txt", "w+") # forwards with ^seq
 header = ''
 seq = ''
 for line in F_infile:
     if line[0] == ">":
-    	header = line.strip()
+        header = line.strip()
         outfile.write(header + "_rc" + "\n")
     else:
-    	seq = line.strip()
-    	outfile.write(rComp(seq)+ "$" + "\n")
+        seq = line.strip()
+        outfile.write(rComp(seq)+ "$" + "\n")
 outfile.close()
 F_infile.close()
 
 ### make adapter reverse complement primers with seq+adpter+$ ->
-F_infile = open(sys.argv[2], "r")
+F_infile = open(sys.argv[1], "r")
 outfile = open(prim_adapt + "A_Forward_PrimAdapt_rc.txt", "w+") # forwards with ^seq
 header = ''
 seq = ''
 for line in F_infile:
     if line[0] == ">":
-    	header = line.strip()
-        outfile.write(header + "_rc" + "\n")
+        header = line.strip()
+        outfile.write(header + "_rc_nextera" + "\n")
     else:
-    	seq = line.strip()
-    	outfile.write(rComp(seq) + adapter_Frc  + "\n")
+        seq = line.strip()
+        outfile.write(rComp(seq) + adapter_Frc_nextera  + "\n")
+outfile.close()
+F_infile.close()
+
+### make adapter reverse complement primers with seq+adpter+$ ->
+F_infile = open(sys.argv[1], "r")
+outfile = open(prim_adapt + "A_Forward_PrimAdapt_rc.txt", "w+") # forwards with ^seq
+header = ''
+seq = ''
+for line in F_infile:
+    if line[0] == ">":
+        header = line.strip()
+        outfile.write(header + "_rc_truseq" + "\n")
+    else:
+        seq = line.strip()
+        outfile.write(rComp(seq) + adapter_Frc_truseq  + "\n")
 outfile.close()
 F_infile.close()
 
@@ -99,40 +105,56 @@ header = ''
 seq = ''
 for line in R_infile:
     if line[0] == ">":
-    	header = line.strip()
+        header = line.strip()
         outfile.write(header + "\n")
     else:
-    	seq = line.strip()
-    	outfile.write("^" + seq + "\n")
+        seq = line.strip()
+        outfile.write("^" + seq + "\n")
 outfile.close()
 R_infile.close()
 
 ### make reverse complement primers with seq$ -> a
-R_infile = open(sys.argv[3], "r")
+R_infile = open(sys.argv[2], "r")
 outfile = open(prim + "a_reverse_rc_primers.txt", "w+") # forwards with ^seq
 header = ''
 seq = ''
 for line in R_infile:
     if line[0] == ">":
-    	header = line.strip()
+        header = line.strip()
         outfile.write(header + "_rc" + "\n")
     else:
-    	seq = line.strip()
-    	outfile.write(rComp(seq)+ "$" + "\n")
+        seq = line.strip()
+        outfile.write(rComp(seq)+ "$" + "\n")
 outfile.close()
 R_infile.close()
 
 ### make reverse complement primers with seq$ -> a
-R_infile = open(sys.argv[3], "r")
+R_infile = open(sys.argv[2], "r")
 outfile = open(prim_adapt + "a_Reverse_PrimAdapt_rc.txt", "w+") # forwards with ^seq
 header = ''
 seq = ''
 for line in R_infile:
     if line[0] == ">":
-    	header = line.strip()
-        outfile.write(header + "_rc" + "\n")
+        header = line.strip()
+        outfile.write(header + "_rc_nextera" + "\n")
     else:
-    	seq = line.strip()
-    	outfile.write(rComp(seq) + adapter_Rrc + "\n")
+        seq = line.strip()
+        outfile.write(rComp(seq) + adapter_Rrc_nextera + "\n")
+outfile.close()
+R_infile.close()
+
+
+### make reverse complement primers with seq$ -> a
+R_infile = open(sys.argv[2], "r")
+outfile = open(prim_adapt + "a_Reverse_PrimAdapt_rc.txt", "w+") # forwards with ^seq
+header = ''
+seq = ''
+for line in R_infile:
+    if line[0] == ">":
+        header = line.strip()
+        outfile.write(header + "_rc_truseq" + "\n")
+    else:
+        seq = line.strip()
+        outfile.write(rComp(seq) + adapter_Rrc_truseq + "\n")
 outfile.close()
 R_infile.close()
