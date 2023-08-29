@@ -32,18 +32,18 @@ ERROR_PS=".3"															# max percent errors allowed in between primer seque
 FILE_TYPE_PS="fastq"													# fasta or fastq.
 F_PRIM="file:${OUT}/Run_info/cutadapt_primers_and_adapters/g_forward_primers.txt"   # path to file with the forward primer
 R_PRIM="file:${OUT}/Run_info/cutadapt_primers_and_adapters/G_reverse_primers.txt"	# path to file with the reverse primer
-MS_F_TRIM="20"	# amount to trim from the 3' end of the MiSeq F read
-MS_R_TRIM="50"	# amount to trim from the 3' end of the MiSeq R read
-HS_F_TRIM="10"	# amount to trim from the 3' end of the HiSeq F read
-HS_R_TRIM="25"	# amount to trim from the 3' end of the HiSeq R read
+MS_F_TRIM="0"	# amount to trim from the 3' end of the MiSeq F read
+MS_R_TRIM="0"	# amount to trim from the 3' end of the MiSeq R read
+HS_F_TRIM="0"	# amount to trim from the 3' end of the HiSeq F read
+HS_R_TRIM="0"	# amount to trim from the 3' end of the HiSeq R read
 
 #####
 # FastX_toolkit
 #####
 # use to trim and filter reads by length
 
-MIN_LEN="100"   # minimum read length to pass filter
-MIN_QUAL="35"   # minimum read quality to pass filter
+MIN_LEN="50"   # minimum read length to pass filter
+MIN_QUAL="30"   # minimum read quality to pass filter
 
 #####
 # Dada2
