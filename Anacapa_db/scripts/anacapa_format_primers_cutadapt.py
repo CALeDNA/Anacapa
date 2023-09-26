@@ -18,11 +18,11 @@ next = "nextera"
 true = "truseq"
 
 if adapt == next:
-   adapter_Frc='ACACCTGTCTCTTATACACATCTGACGCTGCCGACGA'
-   adapter_Rrc='CTGTCTCTTATACACATCTCCGAGCCCACGAGA'
+   adapter_Frc='CTGTCTCTTATACACATCTGACGCTGCCGACGA'
+   adapter_Rrc='CTGTCTCTTATACACATCTCCGAGCCCACGAGAC'
 elif adapt == true:
-   adapter_Frc='AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'
-   adapter_Rrc='AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+   adapter_Frc='AGATCGGAAGAGCACACGTCTGAACTCCAGTCA'
+   adapter_Rrc='AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'
 else:
    print "\n warning \n not nextera or truseq add adater to anacapa_format_primers_cutadapt.py"
 
